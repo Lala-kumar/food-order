@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Mealsimage from "../../../Assets/meals.jpg";
+import Mealsimage from "../../Assets/meals.jpg";
 import HeaderCartButton from "./HeaderCartButton";
 import classes from "./Header.module.css";
 
@@ -17,4 +17,4 @@ const Header = (props) => {
   );
 };
 
-export default Header; 
+export default Header;  
