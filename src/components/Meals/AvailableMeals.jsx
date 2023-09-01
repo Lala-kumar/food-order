@@ -33,7 +33,6 @@ const AvailableMeals = () => {
         setMeals(loadedMeals);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
         setError(error.message);
       }
       setIsLoading(false);
@@ -51,8 +50,6 @@ const AvailableMeals = () => {
     />
   ));
 
-  console.log(mealsList);
-  console.log(mealsList);
   let content = <li>Found no movies.</li>;
 
   if (mealsList.length > 0) {

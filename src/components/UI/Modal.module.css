@@ -10,7 +10,7 @@
 
 .modal {
   position: fixed;
-  top: 20vh;
+  top: 5vh;
   left: 5%;
   width: 90%;
   background-color: white;
@@ -18,12 +18,7 @@
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 30;
-  animation: slide-down 400ms ease-out forwards;
-}
-
-.content {
-  font-weight: bold;
-  font-size: 1.2rem;
+  animation: slide-down 300ms ease-out forwards;
 }
 
 @media (min-width: 768px) {
@@ -43,3 +38,7 @@
     transform: translateY(0);
   }
 }
+/* .content {
+  font-weight: bold;
+  font-size: 1.1rem;
+} */
