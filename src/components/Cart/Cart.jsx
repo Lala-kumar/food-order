@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Fragment } from "react";
 
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
@@ -8,6 +8,8 @@ import Checkout from "./CheckOut";
 
 const Cart = (props) => {
   const [isCheckout, setischeckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -25,6 +27,25 @@ const Cart = (props) => {
     setischeckout(true);
   };
 
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true);
+    const response = await fetch(
+      "https://food-http-bcedf-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user: userData,
+          orderItems: cartCtx.items,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    cartCtx.clearCart();
+  };
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {cartCtx.items.map((item) => (
@@ -53,15 +74,36 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onHideCart={props.onHideCart}>
+  const cartModalContent = (
+    <Fragment>
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={props.onHideCart} />}
+      {isCheckout && (
+        <Checkout onSubmit={submitOrderHandler} onCancel={props.onHideCart} />
+      )}
       {!isCheckout && ModalActions}
+    </Fragment>
+  );
+
+  const isSubmittingModalContent = <p>Sending oreder please wait..</p>;
+
+  const didSubmitModalContent = <Fragment><p>Successfully sent the order</p>
+   <div className={classes.actions}>
+      <button className={classes.button} onClick={props.onHideCart}>
+        Close
+      </button>
+      
+    </div>
+  </Fragment>
+
+  return (
+    <Modal onHideCart={props.onHideCart}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {!isSubmitting && didSubmit && didSubmitModalContent}
     </Modal>
   );
 };
